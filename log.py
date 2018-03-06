@@ -1,9 +1,16 @@
+#!/usr/bin/env python3
 import psycopg2
 
 
 def popular_article(query1):
-    conn = psycopg2.connect(database="news", host="localhost", user="vagrant")
-    cur = conn.cursor()
+    try:
+        conn = psycopg2.connect(database="news",
+                                host="localhost",
+                                user="vagrant")
+        cur = conn.cursor()
+    except (Exception, psycopg2.DatabaseError) as error:
+        print(error)
+        return None
     print("POPULAR ARTICLES ARE: \n")
     cur.execute(query1)
     result_set = cur.fetchall()
@@ -11,12 +18,19 @@ def popular_article(query1):
         title = result_set[i][0]
         views = result_set[i][1]
         print("%s--%d" % (title, views))
-        cur.close()
+    cur.close()
+    conn.close()
 
 
 def popular_author(query2):
-    conn = psycopg2.connect(database="news", host="localhost", user="vagrant")
-    cur = conn.cursor()
+    try:
+        conn = psycopg2.connect(database="news",
+                                host="localhost",
+                                user="vagrant")
+        cur = conn.cursor()
+    except (Exception, psycopg2.DatabaseError) as error:
+        print(error)
+        return None
     print("\n")
     print("POPULAR AUTHORD ARE:\n")
     cur.execute(query2)
@@ -25,12 +39,19 @@ def popular_author(query2):
         author_name = result_set[i][0]
         views = result_set[i][1]
         print("%s--%d" % (author_name, views))
-        cur.close()
+    cur.close()
+    conn.close()
 
 
 def error(query3):
-    conn = psycopg2.connect(database="news", host="localhost", user="vagrant")
-    cur = conn.cursor()
+    try:
+        conn = psycopg2.connect(database="news",
+                                host="localhost",
+                                user="vagrant")
+        cur = conn.cursor()
+    except (Exception, psycopg2.DatabaseError) as error:
+        print(error)
+        return None
     print("\n")
     print("DAYS ON WHICH THERE IS MORE THAN 1% ERROR:\n")
     cur.execute(query3)
@@ -39,7 +60,8 @@ def error(query3):
         date = result_set[i][0]
         err = result_set[i][1]
         print("%s--%.1f %%" % (date, err))
-        cur.close()
+    cur.close()
+    conn.close()
 
 
 if __name__ == '__main__':
